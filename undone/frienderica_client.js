@@ -87,12 +87,12 @@ async function main() {
   printPosts(statuses);
 }
 
-if (require.main === module) {
-  main();
-}
+// if (require.main === module) {
+//   main();
+// }
 
-module.exports = {
-  fetchPublicTimeline,
-  stripHtml,
-  printPosts
-};
+// module.exports = {
+//   fetchPublicTimeline,
+//   stripHtml,
+//   printPosts
+// };

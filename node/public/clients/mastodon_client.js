@@ -2,8 +2,7 @@
 // A modular Mastodon-compatible client with callable functions and CLI support
 
 // EX: node mastodon_client.js https://mastodon.social gargron 5
-
-const axios = require('axios');
+import axios from 'axios';
 
 /**
  * Fetch recent statuses for a user from a Mastodon/Friendica-compatible instance.
@@ -12,7 +11,7 @@ const axios = require('axios');
  * @param {number} [limit=5] - Number of statuses to fetch
  * @returns {Promise<Array<Object>>} - Resolves to an array of status objects
  */
-async function fetchUserPosts(instanceUrl, username, limit = 5) {
+async function fetchMastodonPosts(instanceUrl, username, limit = 5) {
   const base = instanceUrl.replace(/\/+$/, '');
   // 1) lookup the account ID
   const lookupUrl = `${base}/api/v1/accounts/lookup`;
@@ -53,16 +52,16 @@ async function main() {
   }
   const limit = Number(rawLimit) || 5;
   try {
-    const statuses = await fetchUserPosts(instanceUrl, username, limit);
+    const statuses = await fetchMastodonPosts(instanceUrl, username, limit);
     printStatuses(statuses);
   } catch (err) {
     console.error('Error fetching posts:', err.response?.statusText || err.message);
   }
 }
 
-// Run CLI if invoked directly
-if (require.main === module) {
-  main();
-}
+// // Run CLI if invoked directly
+// if (require.main === module) {
+//   main();
+// }
 
-module.exports = { fetchUserPosts, printStatuses };
+// module.exports = { fetchUserPosts: fetchMastodonPosts, printStatuses };

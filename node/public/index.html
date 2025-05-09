@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My App</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id="app">
+        <h1>Welcome</h1>
+        <div class="container">
+            <p>This is the default page of the application.</p>
+        </div>
+        <button id="fetchBtn">Collect</button>
+    </div>
+</body>
+
+<script type="module">
+    import { fetchNostrEvents } from './clients/nostr_client.js';
+
+    const btn = document.getElementById('fetchBtn');
+
+    btn.addEventListener('click', async () => {
+        console.log("something");
+        try {
+            const events = await fetchNostrEvents('wss://relay.damus.io', 5);
+            console.log( JSON.stringify(events, null, 2));
+        } catch (err) {
+            consoel.log(err);
+        }
+    });
+</script>
+
+</html>

@@ -54,11 +54,11 @@ async function main() {
   printPosts(posts);
 }
 
-if (require.main === module) {
-  main();
-}
+// if (require.main === module) {
+//   main();
+// }
 
-module.exports = {
-  fetchBlueskyPosts,
-  printPosts,
-};
+// module.exports = {
+//   fetchBlueskyPosts,
+//   printPosts,
+// };

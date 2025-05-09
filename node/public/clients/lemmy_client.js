@@ -4,7 +4,8 @@
 
 // EX: node lemmy_client.js https://lemmy.ml programming 5
 
-const axios = require('axios');
+
+
 
 /**
  * Fetch latest posts from a Lemmy instance.
@@ -61,8 +62,8 @@ async function main() {
   }
 }
 
-if (require.main === module) {
-  main();
-}
+// if (require.main === module) {
+//   main();
+// }
 
-module.exports = { fetchPosts, printPosts };
+// module.exports = { fetchPosts, printPosts };

@@ -31,22 +31,22 @@ async function fetchPeerTubeVideos(instanceUrl, scope = 'trending', limit = 5) {
 }
 
 // CLI entry point
-if (require.main === module) {
-  const [,, instance, cliScope, cliLimit] = process.argv;
-  if (!instance) {
-    console.error('Usage: node peertube_client.js <instance_url> [scope] [limit]');
-    console.error("  scope: 'local' or 'trending' (default: 'trending')");
-    process.exit(1);
-  }
-  const scope = cliScope || 'trending';
-  const limit = parseInt(cliLimit, 10) || 5;
+// if (require.main === module) {
+//   const [,, instance, cliScope, cliLimit] = process.argv;
+//   if (!instance) {
+//     console.error('Usage: node peertube_client.js <instance_url> [scope] [limit]');
+//     console.error("  scope: 'local' or 'trending' (default: 'trending')");
+//     process.exit(1);
+//   }
+//   const scope = cliScope || 'trending';
+//   const limit = parseInt(cliLimit, 10) || 5;
 
-  (async () => {
-    const videos = await fetchPeerTubeVideos(instance, scope, limit);
-    videos.forEach(vid => {
-      const title = vid.name || vid.title || 'untitled';
-      const link = vid.videoUrl || vid.url || '';
-      console.log(`${title}\n${link}\n`);
-    });
-  })();
-}
+//   (async () => {
+//     const videos = await fetchPeerTubeVideos(instance, scope, limit);
+//     videos.forEach(vid => {
+//       const title = vid.name || vid.title || 'untitled';
+//       const link = vid.videoUrl || vid.url || '';
+//       console.log(`${title}\n${link}\n`);
+//     });
+//   })();
+// }

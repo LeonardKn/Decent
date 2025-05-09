@@ -3,7 +3,8 @@
 // Usage: node nostr_client.js <relay_url> [limit]
 // Example: node nostr_client.js wss://relay.damus.io 5
 
-const WebSocket = require('ws');
+// const ws = new WebSocket("wss://example.com");
+// ws.onmessage = e => console.log(e.data);
 
 /**
  * Fetch latest Nostr text notes (kind 1) events from a relay.
@@ -11,40 +12,39 @@ const WebSocket = require('ws');
  * @param {number} limit - Number of events to fetch (default: 5)
  * @returns {Promise<Array<Object>>} - Resolves to an array of event objects
  */
-function fetchNostrEvents(relayUrl, limit = 5) {
+/**
+ * Fetch latest Nostr text notes (kind 1) events from a relay.
+ */
+export function fetchNostrEvents(relayUrl, limit = 5) {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(relayUrl);
     const events = [];
-    const subscriptionId = 'sub1';
+    const subId = 'sub1';
 
-    ws.on('open', () => {
-      const req = ["REQ", subscriptionId, { kinds: [1], limit }];
-      ws.send(JSON.stringify(req));
+    ws.addEventListener('open', () => {
+      ws.send(JSON.stringify(["REQ", subId, { kinds: [1], limit }]));
     });
 
-    ws.on('message', (data) => {
-      try {
-        const parsed = JSON.parse(data);
-        if (parsed[0] === 'EVENT') {
-          const event = parsed[2];
-          events.push(event);
-          if (events.length >= limit) {
-            ws.send(JSON.stringify(["CLOSE", subscriptionId]));
-            ws.close();
-            resolve(events);
-          }
+    ws.addEventListener('message', e => {
+      let msg;
+      try { msg = JSON.parse(e.data) } catch { return }
+      if (msg[0]==='EVENT') {
+        events.push(msg[2]);
+        if (events.length >= limit) {
+          ws.send(JSON.stringify(["CLOSE", subId]));
+          ws.close();
+          resolve(events);
         }
-      } catch (err) {
-        // ignore parse errors
       }
     });
 
-    ws.on('error', (err) => reject(err));
-    ws.on('close', () => {
+    ws.addEventListener('error', reject);
+    ws.addEventListener('close', () => {
       if (events.length < limit) resolve(events);
     });
   });
 }
+
 
 /**
  * Print Nostr events to console.
@@ -82,8 +82,8 @@ async function main() {
 }
 
 // Run CLI if invoked directly
-if (require.main === module) {
-  main();
-}
+// if (require.main === module) {
+//   main();
+// }
 
-module.exports = { fetchNostrEvents, printEvents };
+// module.exports = { fetchNostrEvents, printEvents };
